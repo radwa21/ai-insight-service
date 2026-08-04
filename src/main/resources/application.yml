@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: ai-insight-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/ai_insight_db
+
+llm:
+  api:
+    base-url: https://api.anthropic.com/v1/messages
+    api-key: ${ANTHROPIC_API_KEY:mock-key}
+    model: claude-sonnet-4-5-20250929
+    max-tokens: 1024
+    timeout-seconds: 15
+    mock-enabled: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      llmService:
+        sliding-window-size: 10
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+        permitted-number-of-calls-in-half-open-state: 3
+  retry:
+    instances:
+      llmService:
+        max-attempts: 3
+        wait-duration: 2s
+  ratelimiter:
+    instances:
+      llmService:
+        limit-for-period: 10
+        limit-refresh-period: 1s
+
+logging:
+  level:
+    com.radwa.aiinsight: DEBUG
