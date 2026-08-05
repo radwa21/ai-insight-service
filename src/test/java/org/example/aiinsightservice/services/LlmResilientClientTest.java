@@ -6,24 +6,22 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import tools.jackson.databind.ObjectMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
+@SpringBootTest
 class LlmResilientClientTest {
 
     @Mock
     private AnthropicApiClient anthropicApiClient;
-
+    @Autowired
     private LlmResilientClient llmResilientClient;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-        llmResilientClient = new LlmResilientClient(anthropicApiClient, new ObjectMapper());
-    }
 
     @Test
     void whenAnthropicApiFails_thenFallbackIsReturned() {
