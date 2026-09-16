@@ -31,3 +31,6 @@ jobs:
         run: ./mvnw clean verify
         env:
           ANTHROPIC_API_KEY: mock-key-for-ci
+
+      - name: Build Docker image
+        run: docker build -t ai-insight-service:${{ github.sha }} .
